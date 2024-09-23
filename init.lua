@@ -16,6 +16,33 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 --默认配置处
 
+--创建终端
+local function toggle_terminal()
+  local term_bufnr = vim.fn.bufnr("term://")
+  if term_bufnr ~= -1 then
+      -- 终端buffer存在，检查它是否可见
+      local term_win = vim.fn.bufwinid(term_bufnr)
+      if term_win ~= -1 then
+          -- 终端可见，关闭它
+          vim.api.nvim_win_close(term_win, true)
+      else
+          -- 终端不可见，切换到它
+          vim.cmd('sbuffer ' .. term_bufnr)
+      end
+  else
+      -- 没有终端buffer，创建一个新的
+      vim.cmd('split | terminal')
+  end
+end
+
+-- 在普通模式下使用 Ctrl+T 切换终端
+vim.keymap.set('n', '<C-t>', toggle_terminal, { noremap = true, silent = true, desc = "Toggle terminal" })
+
+-- 在终端模式下使用 Ctrl+T 切换回普通模式并关闭终端窗口
+vim.keymap.set('t', '<C-t>', '<C-\\><C-n><cmd>lua toggle_terminal()<CR>', { noremap = true, silent = true, desc = "Toggle terminal" })
+
+
+
 -- 代理
 vim.g.nvim_treesitter_github_proxy = "http://127.0.0.1:10809"
 vim.fn.setenv("HTTP_PROXY", "http://127.0.0.1:10809")
@@ -65,6 +92,15 @@ require("lazy").setup({
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
     'hrsh7th/cmp-cmdline',
+
+    --模糊搜索和命令执行器
+    {
+      'nvim-telescope/telescope.nvim', tag = '0.1.8',
+  -- or                              , branch = '0.1.x',
+        dependencies = { 'nvim-lua/plenary.nvim' }
+    },
+    --格式化
+    'sbdchd/neoformat',
 
     -- 使用 nvim-autopairs 插件
     'windwp/nvim-autopairs',
@@ -117,3 +153,5 @@ require('c_fidget')
 require('c_neotree')
 require('keymap')
 require('nvim_autopairs')
+require('neoformat')
+require('telescope')

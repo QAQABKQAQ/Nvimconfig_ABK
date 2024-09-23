@@ -35,7 +35,15 @@ keymap.set('v', '<C-w>a', '<Esc>ggVG', { noremap = true, desc = "Select all" })
 -- neotree
 keymap.set('n', '<leader>e', toggle_neo_tree, { noremap = true, silent = true, desc = "Toggle Neo-tree" })
 keymap.set('n', '<leader>o', '<cmd>Neotree focus<cr>', { desc = "Focus Neo-tree" })
+-- 使用 Alt-h 和 Alt-l 在窗口间快速切换
+vim.keymap.set('n', '<A-h>', ':wincmd h<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<A-l>', ':wincmd l<CR>', { noremap = true, silent = true })
 
+local builtin = require('telescope.builtin')
+vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
+vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 -- vim.o.autoindent = true
 -- vim.o.smartindent = true
 -- vim.cmd([[
