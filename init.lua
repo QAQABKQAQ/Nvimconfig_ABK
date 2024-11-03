@@ -13,6 +13,22 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	end
 end
 vim.opt.rtp:prepend(lazypath)
+
+-- 自动删除 main.shada 文件
+vim.api.nvim_create_autocmd("VimEnter", {
+    pattern = "*",
+    callback = function()
+        local shada_file = vim.fn.stdpath('state') .. '/shada/main.shada'
+        vim.fn.delete(shada_file)
+    end
+})
+
+--系统提示音关闭
+vim.opt.errorbells = false
+vim.opt.visualbell = false
+vim.opt.belloff = "all"
+
+
 -- 代理
 vim.g.nvim_treesitter_github_proxy = "http://127.0.0.1:10809"
 vim.fn.setenv("HTTP_PROXY", "http://127.0.0.1:10809")
@@ -33,6 +49,9 @@ require("lazy").setup({
 	"hrsh7th/cmp-vsnip",
 	"hrsh7th/vim-vsnip",
 
+	--使用:StartupTime查看插件耗时百分比
+	'dstein64/vim-startuptime',
+
 	--为 Slint UI 添加 Neovim 支持，适合开发使用 Slint 的应用。
 	"slint-ui/vim-slint",
 
@@ -40,6 +59,7 @@ require("lazy").setup({
 	{
 		"L3MON4D3/LuaSnip",
 		build = "make install_jsregexp",
+		event="VeryLazy",
 	},
 
 	--代码解析器插件，提供更好的语法高亮和代码导航
@@ -49,13 +69,13 @@ require("lazy").setup({
 	"windwp/nvim-ts-autotag",
 
 	--终端管理,内置终端
-	{ "akinsho/toggleterm.nvim", version = "*", config = true },
+	{ "akinsho/toggleterm.nvim", version = "*", config = true ,event="VeryLazy",},
 
 	--高亮缩进虚线
-	{ "echasnovski/mini.indentscope", version = "*" },
+	{ "echasnovski/mini.indentscope", version = "*" ,event="VeryLazy",},
 
 	--用于在 true/false、on/off 等选项之间快速切换。
-	"rmagatti/alternate-toggler",
+	{"rmagatti/alternate-toggler",event="InsertEnter",},
 
 	--给选定字符添加括号或引号
 	{
@@ -83,6 +103,7 @@ require("lazy").setup({
 	{
 		"folke/todo-comments.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
+		event="VeryLazy",
 		opts = {
 			-- your configuration comes here
 			-- or leave it empty to use the default settings
@@ -119,6 +140,9 @@ require("lazy").setup({
 	--lsp增强,提供直观的操作界面
 	"nvimdev/lspsaga.nvim",
 
+	--lsp加载进度
+	"j-hui/fidget.nvim",
+
 	--安装开发工具
 	"WhoIsSethDaniel/mason-tool-installer.nvim",
 
@@ -150,15 +174,15 @@ require("lazy").setup({
 	{
 		"nvim-telescope/telescope.nvim",
 		tag = "0.1.8",
-
+		event="VeryLazy",
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 
 	--快速跳转和搜索的插件
 	{
 		"folke/flash.nvim",
-		event = "VeryLazy",
 		opts = {},
+		event="VeryLazy",
   -- stylua: ignore
   keys = {
     { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
@@ -181,6 +205,7 @@ require("lazy").setup({
 	--项目切换
 	{
 		"coffebar/neovim-project",
+		event="VeryLazy",
 		opts = {
 			projects = { -- define project roots
 				"D:/learning/workspace/*",
@@ -205,6 +230,12 @@ require("lazy").setup({
 		lazy = false,
 		priority = 100,
 	},
+
+
+	--标签
+	{'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
+
+
 })
 
 require("base")
@@ -227,3 +258,5 @@ require("color")
 require("lsp-rust")
 require("neovide")
 require("lsp-slint")
+require("c-buffer")
+require("c-fidget")
