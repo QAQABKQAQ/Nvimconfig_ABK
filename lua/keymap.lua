@@ -14,4 +14,11 @@ keymap.set('n','<leader>x','<cmd>x<cr>')
 keymap.set('n', 'j', [[v:count?'j':'gj']], { noremap = true, expr = true })
 keymap.set('n', 'k', [[v:count?'k':'gk']], { noremap = true, expr = true })
 
+--右键头聚焦右边
+vim.keymap.set('n', '<C-Right>', '<cmd>wincmd l<CR>', { noremap = true, silent = true })
+--左箭头聚焦左边
+vim.keymap.set('n', '<C-Left>', '<cmd>wincmd h<CR>', { noremap = true, silent = true })
 
+vim.keymap.set('n', '[b', '<cmd>BufferLineCyclePrev<cr>')
+vim.keymap.set('n', ']b', '<cmd>BufferLineCycleNext<cr>')
+vim.keymap.set('n', '<leader>c', '<cmd>BufferLinePickClose<cr>')

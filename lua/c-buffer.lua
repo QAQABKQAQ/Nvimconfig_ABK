@@ -19,6 +19,4 @@ bufferline.setup {
 }
 
 
-vim.keymap.set('n', '[b', '<cmd>BufferLineCyclePrev<cr>')
-vim.keymap.set('n', ']b', '<cmd>BufferLineCycleNext<cr>')
-vim.keymap.set('n', '<leader>c', '<cmd>BufferLinePickClose<cr>')
+

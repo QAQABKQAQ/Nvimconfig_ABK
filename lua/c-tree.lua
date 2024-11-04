@@ -22,6 +22,8 @@ local function my_on_attach(bufnr)
   -- custom mappings
   vim.keymap.set('n', '<c-e>', api.tree.toggle, opts('Toggle'))
   vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
+
+
 end
 
 require('nvim-tree').setup({
@@ -31,7 +33,7 @@ require('nvim-tree').setup({
     dotfiles = false,
   },
   actions = {
-    open_file = { quit_on_open = true },
+    open_file = { quit_on_open = false },
   },
   update_focused_file = {
     enable = true,
